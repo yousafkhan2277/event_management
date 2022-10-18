@@ -36,6 +36,75 @@ class CreateCinemaSchema extends Migration
      */
     public function up()
     {
+
+        Schema::create('movies', function($table) {
+            $table->increments('id');
+            $table->string('title');
+            $table->string('director');
+            $table->string('description');
+            $table->integer('duration_min');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->integer('deleted_by');
+            $table->boolean('is_active');
+            $table->timestamps();
+            $table->softdelete();
+
+
+        });
+
+        Schema::create('seat_type', function($table) {
+            $table->increments('id');
+            $tabl->string('name');
+            $table->integer('ticket_amount');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->integer('deleted_by');
+            $table->boolean('is_active');
+            $table->timestamps();
+            $table->softdelete();
+        });
+        Schema::create('halls', function($table) {
+            $table->increments('id');
+            $table->string('name');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->integer('deleted_by');
+            $table->boolean('is_active');
+            $table->timestamps();
+            $table->softdelete();
+        });
+
+        Schema::create('seats', function($table) {
+            $table->increments('id');
+            $table->integer('row')->unsigned();
+            $table->integer('number')->unsigned();
+            $table->unsignedBigInteger('hall_id')->nullable()->index('seat_type_id');
+            $table->unsignedBigInteger('seat_type_id')->nullable()->index('seat_type_id');
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->integer('deleted_by');
+            $table->boolean('is_active');
+            $table->timestamps();
+            $table->softdelete();
+        });
+
+        Schema::create('seats_reserved', function($table) {
+            $table->increments('id');
+            $table->integer('movie_id')->unsigned()->nullable();
+            $table->integer('seat_id')->unsigned()->nullable();
+            $table->integer('user_id')->unsigned()->nullable();
+            $table->integer('created_by');
+            $table->integer('updated_by');
+            $table->integer('deleted_by');
+            $table->boolean('is_active');
+            $table->timestamps();
+            $table->softdelete();
+        });
+
+       
+    
+
         throw new \Exception('implement in coding task 4, you can ignore this exception if you are just running the initial migrations.');
     }
 

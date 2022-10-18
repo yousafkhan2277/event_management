@@ -8,7 +8,8 @@ use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Date;
-
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Carbon;
 class EventsController extends BaseController
 {
     public function getWarmupEvents() {
@@ -102,8 +103,10 @@ class EventsController extends BaseController
      */
 
     public function getEventsWithWorkshops() {
-        
-        return Event::with('workshop')->get();
+        // DB::enableQueryLog();
+         return  Event::with('workshop')->get();
+        // return "ddd";
+        // dd(DB::getQueryLog());
         throw new \Exception('implement in coding task 1');
     }
 
@@ -182,6 +185,14 @@ class EventsController extends BaseController
      */
 
     public function getFutureEventsWithWorkshops() {
+
+         DB::enableQueryLog();
+
+        return  Event::whereHas('workshop', function($query) {
+            $query->where('start', '>', Carbon::now());
+         })->
+        with('workshop')->get();
+        // dd(DB::getQueryLog());
         throw new \Exception('implement in coding task 2');
     }
 }
